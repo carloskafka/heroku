@@ -37,44 +37,40 @@ import org.springframework.web.bind.annotation.RequestMapping;
 @SpringBootApplication
 public class Main {
 
-  @Value("${spring.datasource.url}")
-  private String dbUrl;
+	@Autowired
+	private DataSource dataSource;
+	@Autowired
+	private EntityManager em;
 
-  @Autowired
-  private DataSource dataSource;
+	public static void main(String[] args) throws Exception {
+		SpringApplication.run(Main.class, args);
+	}
 
-  public static void main(String[] args) throws Exception {
-    SpringApplication.run(Main.class, args);
-  }
+	@RequestMapping("/")
+	String index() {
+		return "index";
+	}
 
-  @RequestMapping("/")
-  String index() {
-    return "index";
-  }
-  
-  @PersistenceContext
-  private EntityManager em;
+	@RequestMapping("/db")
+	String db(Map<String, Object> model) {
+		try (Connection connection = dataSource.getConnection()) {
+			Statement stmt = connection.createStatement();
 
-  @RequestMapping("/db")
-  String db(Map<String, Object> model) {
-    try (Connection connection = dataSource.getConnection()) {
-      Statement stmt = connection.createStatement();
+			em.persist(new Tick());
 
-      em.persist(new Tick());
-      
-      ResultSet rs = stmt.executeQuery("SELECT tick FROM tick");
+			ResultSet rs = stmt.executeQuery("SELECT tick FROM tick");
 
-      ArrayList<String> output = new ArrayList<String>();
-      while (rs.next()) {
-        output.add("Read from DB: " + rs.getTimestamp("tick"));
-      }
+			ArrayList<String> output = new ArrayList<String>();
+			while (rs.next()) {
+				output.add("Read from DB: " + rs.getTimestamp("tick"));
+			}
 
-      model.put("records", output);
-      return "db";
-    } catch (Exception e) {
-      model.put("message", e.getMessage());
-      return "error";
-    }
-  }
+			model.put("records", output);
+			return "db";
+		} catch (Exception e) {
+			model.put("message", e.getMessage());
+			return "error";
+		}
+	}
 
 }
