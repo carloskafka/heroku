@@ -23,6 +23,7 @@ import java.util.ArrayList;
 import java.util.Map;
 
 import javax.persistence.EntityManager;
+import javax.persistence.PersistenceContext;
 import javax.sql.DataSource;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -37,7 +38,7 @@ public class Main {
 
 	@Autowired
 	private DataSource dataSource;
-	@Autowired
+    @PersistenceContext
 	private EntityManager em;
 
 	public static void main(String[] args) throws Exception {
