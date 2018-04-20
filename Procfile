@@ -1,1 +1,1 @@
-web: java -jar target/java-getting-started-1.0.jar
+web: cp src/main/resources/application.producao.properties src/main/resources/application.properties && java -jar target/java-getting-started-1.0.jar
