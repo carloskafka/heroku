@@ -16,21 +16,14 @@
 
 package com.example;
 
-import java.sql.Connection;
-import java.sql.ResultSet;
-import java.sql.Statement;
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Map;
-
-import javax.persistence.EntityManager;
-import javax.persistence.PersistenceContext;
-import javax.sql.DataSource;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.stereotype.Controller;
-import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 @Controller
@@ -38,9 +31,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 public class Main {
 
 	@Autowired
-	private DataSource dataSource;
-	@PersistenceContext
-	private EntityManager em;
+	TickService tickService;
 
 	public static void main(String[] args) throws Exception {
 		SpringApplication.run(Main.class, args);
@@ -51,23 +42,17 @@ public class Main {
 		return "index";
 	}
 
-
 	@RequestMapping("/db")
-	@Transactional
 	String db(Map<String, Object> model) {
-		try (Connection connection = dataSource.getConnection()) {
-			Statement stmt = connection.createStatement();
 
-			em.persist(new Tick());
+		try {
+			List<String> ticksString = new ArrayList<>();
 
-			ResultSet rs = stmt.executeQuery("SELECT tick FROM tick");
-
-			ArrayList<String> output = new ArrayList<String>();
-			while (rs.next()) {
-				output.add("Read from DB: " + rs.getTimestamp("tick"));
+			for (Tick tick : tickService.obterTodos()) {
+				ticksString.add("Read from DB: " + tick.getTick());
 			}
 
-			model.put("records", output);
+			model.put("records", ticksString);
 			return "db";
 		} catch (Exception e) {
 			model.put("message", e.getMessage());
