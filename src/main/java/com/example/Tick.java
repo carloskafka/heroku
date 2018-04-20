@@ -1,5 +1,6 @@
 package com.example;
 
+import java.text.SimpleDateFormat;
 import java.util.Calendar;
 
 import javax.persistence.Column;
@@ -36,6 +37,10 @@ public class Tick {
 	public Calendar getTick() {
 		return tick;
 	}
+	
+	public String getTickString() {
+		return formatarData(tick);
+	}
 
 	public void setTick(Calendar tick) {
 		this.tick = tick;
@@ -43,7 +48,20 @@ public class Tick {
 
 	@Override
 	public String toString() {
-		return "Tick [id=" + id + ", tick=" + tick + "]";
+		return "Tick [id=" + id + ", tick=" + formatarData(tick) + "]";
+	}
+
+	private String formatarData(Calendar data) {
+		String dataFormatada = "";
+		try {
+			if (data != null) {
+				dataFormatada = new SimpleDateFormat("dd/MM/yyyy HH:mm:ss").format(data.getTime());
+			}
+		} catch (Exception e) {
+			System.out.println(e.getMessage());
+		}
+
+		return dataFormatada;
 	}
 
 }

@@ -1,17 +1,16 @@
 package com.example;
 
-import java.util.ArrayList;
-import java.util.List;
 import java.util.Map;
 
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import javax.inject.Inject;
 
-@RestController	
+import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.RequestMapping;
+
+@Controller
 public class TickController {
-	@Autowired
-	TickRepository tickRepository;
+	@Inject
+	TickService tickService;
 
 	@RequestMapping("/")
 	String index() {
@@ -20,15 +19,9 @@ public class TickController {
 
 	@RequestMapping("/db")
 	String db(Map<String, Object> model) {
-
 		try {
-			List<String> ticksString = new ArrayList<>();
-
-			for (Tick tick : tickRepository.obterTodos()) {
-				ticksString.add("Read from DB: " + tick.getTick());
-			}
-
-			model.put("records", ticksString);
+			tickService.salvar(new Tick());
+			model.put("records", tickService.obterTodos());
 			return "db";
 		} catch (Exception e) {
 			model.put("message", e.getMessage());
