@@ -11,7 +11,7 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController	
 public class TickController {
 	@Autowired
-	TickService tickService;
+	TickRepository tickRepository;
 
 	@RequestMapping("/")
 	String index() {
@@ -24,7 +24,7 @@ public class TickController {
 		try {
 			List<String> ticksString = new ArrayList<>();
 
-			for (Tick tick : tickService.obterTodos()) {
+			for (Tick tick : tickRepository.obterTodos()) {
 				ticksString.add("Read from DB: " + tick.getTick());
 			}
 

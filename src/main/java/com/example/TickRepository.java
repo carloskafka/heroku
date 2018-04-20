@@ -8,30 +8,29 @@ import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.persistence.TypedQuery;
 
-import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Repository;
 
-@Component
-public class TickService {	
+@Repository
+public class TickRepository {
 	@PersistenceContext
 	private EntityManager em;
-	
+
 	@PostConstruct
 	public void init() {
 		em.persist(new Tick());
 	}
-	
+
 	public List<Tick> obterTodos() {
 		List<Tick> ticks = new ArrayList<>();
-		
+
 		try {
 			TypedQuery<Tick> query = em.createQuery("SELECT tick FROM Tick", Tick.class);
 			ticks = query.getResultList();
 		} catch (Exception e) {
 			System.out.println(e.getMessage());
 		}
-		
+
 		return ticks;
 	}
-	
-	
+
 }
