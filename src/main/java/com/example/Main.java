@@ -51,17 +51,14 @@ public class Main {
 		return "index";
 	}
 
-	@Transactional
-	public void salvar() {
-		em.persist(new Tick());
-	}
 
 	@RequestMapping("/db")
+	@Transactional
 	String db(Map<String, Object> model) {
 		try (Connection connection = dataSource.getConnection()) {
 			Statement stmt = connection.createStatement();
 
-			salvar();
+			em.persist(new Tick());
 
 			ResultSet rs = stmt.executeQuery("SELECT tick FROM tick");
 
