@@ -30,6 +30,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.stereotype.Controller;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 @Controller
@@ -38,7 +39,7 @@ public class Main {
 
 	@Autowired
 	private DataSource dataSource;
-    @PersistenceContext
+	@PersistenceContext
 	private EntityManager em;
 
 	public static void main(String[] args) throws Exception {
@@ -50,12 +51,17 @@ public class Main {
 		return "index";
 	}
 
+	@Transactional
+	public void salvar() {
+		em.persist(new Tick());
+	}
+
 	@RequestMapping("/db")
 	String db(Map<String, Object> model) {
 		try (Connection connection = dataSource.getConnection()) {
 			Statement stmt = connection.createStatement();
 
-			em.persist(new Tick());
+			salvar();
 
 			ResultSet rs = stmt.executeQuery("SELECT tick FROM tick");
 
