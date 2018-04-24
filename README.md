@@ -1,4 +1,4 @@
-# java-getting-started
+# Heroku
 
 [![CircleCI](https://circleci.com/gh/heroku/java-getting-started.svg?style=svg)](https://circleci.com/gh/heroku/java-getting-started)
 
@@ -13,8 +13,8 @@ This application supports the [Getting Started with Java on Heroku](https://devc
 Make sure you have Java and Maven installed.  Also, install the [Heroku CLI](https://cli.heroku.com/).
 
 ```sh
-$ git clone https://github.com/heroku/java-getting-started.git
-$ cd java-getting-started
+$ git clone https://github.com/carloskafka/heroku.git
+$ cd heroku
 $ mvn install
 $ heroku local:start
 ```
