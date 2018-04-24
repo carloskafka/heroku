@@ -40,3 +40,5 @@ $ heroku open
 For more information about using Java on Heroku, see these Dev Center articles:
 
 - [Java on Heroku](https://devcenter.heroku.com/categories/java)
+
+You can check this app running on [sisrelogioponto.herokuapp.com](https://sisrelogioponto.herokuapp.com), at first time it will delay a bit to load because it will start a new node but the second time it will load faster.
