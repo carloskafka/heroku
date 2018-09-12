@@ -17,7 +17,3 @@ steps:
     publishJUnitResults: false
     testResultsFiles: '**/TEST-*.xml'
     goals: 'package'
-- script: |
-    echo Starting the build
-    java -jar /home/vsts/work/1/s/target/java-getting-started-1.0.jar
-  displayName: 'Build with Maven'
